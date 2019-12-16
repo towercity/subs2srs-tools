@@ -14,7 +14,9 @@ def change_decks():
     string_list = ['due item:']
     for (name, value) in note.items():
         string_list.append("%s: %s" % (name, value))
-    showInfo("\n".join(string_list))
+    #showInfo("\n".join(string_list))
+    test = mw.col.findNotes('tag:00change')
+    showInfo("found %s cards tagged '00change'" % len(test))
 
 # create a new menu item, "test"
 action = QAction("Change Decks", mw)
