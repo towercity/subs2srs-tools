@@ -8,22 +8,17 @@ from aqt.qt import *
 # We're going to add a menu item below. First we want to create a function to
 # be called when the menu item is activated.
 
-def testFunction():
-    # get the number of cards in the current collection, which is stored in
-    # the main window
-    cardCount = mw.col.cardCount()
+def change_decks():
     card = mw.col.sched.getCard()
     note = card.note()
     string_list = ['due item:']
     for (name, value) in note.items():
         string_list.append("%s: %s" % (name, value))
     showInfo("\n".join(string_list))
-    # show a message box
-    #showInfo("Card count: %d" % cardCount)
 
 # create a new menu item, "test"
-action = QAction("test", mw)
+action = QAction("Change Decks", mw)
 # set it to call testFunction when it's clicked
-action.triggered.connect(testFunction)
+action.triggered.connect(change_decks)
 # and add it to the tools menu
 mw.form.menuTools.addAction(action)
