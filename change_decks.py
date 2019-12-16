@@ -9,13 +9,7 @@ from aqt.qt import *
 # be called when the menu item is activated.
 
 def change_decks():
-    card = mw.col.sched.getCard()
-    note = card.note()
-    string_list = ['due item:']
-    for (name, value) in note.items():
-        string_list.append("%s: %s" % (name, value))
-    #showInfo("\n".join(string_list))
-    test = mw.col.findNotes('note:subs2srs tag:00change')
+    test = mw.col.findNotes('note:subs2srs tag:00change') #saves a list of note IDs
     showInfo("found %s cards tagged '00change'" % len(test))
 
 # create a new menu item, "test"
