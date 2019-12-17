@@ -17,8 +17,8 @@ def search_jisho(word):
 
 def change_decks():
     change_tag = config['tags']['change']
-    test = mw.col.findNotes('note:subs2srs tag:%s' % change_tag) #saves a list of note IDs
-    showInfo("found %s cards tagged '%s'" % (len(test), change_tag))
+    change_notes = mw.col.findNotes('note:subs2srs tag:%s' % change_tag) #saves a list of note IDs
+    showInfo("found %s cards tagged '%s'" % (len(change_notes), change_tag))
     test = search_jisho('red')
     showInfo(str(test['meta']['status']))
 
