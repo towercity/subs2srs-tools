@@ -5,16 +5,14 @@ from aqt.utils import showInfo
 # import all of the Qt GUI library
 from aqt.qt import *
 
-# We're going to add a menu item below. First we want to create a function to
-# be called when the menu item is activated.
+config = mw.addonManager.getConfig(__name__)
 
 def change_decks():
-    test = mw.col.findNotes('note:subs2srs tag:00change') #saves a list of note IDs
-    showInfo("found %s cards tagged '00change'" % len(test))
+    change_tag = config['tags']['change']
+    test = mw.col.findNotes('note:subs2srs tag:%s' % change_tag) #saves a list of note IDs
+    showInfo("found %s cards tagged '%s'" % (len(test), change_tag))
 
-# create a new menu item, "test"
+# add menu item to menu   
 action = QAction("Change Decks", mw)
-# set it to call testFunction when it's clicked
 action.triggered.connect(change_decks)
-# and add it to the tools menu
 mw.form.menuTools.addAction(action)
