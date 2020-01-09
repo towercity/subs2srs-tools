@@ -37,16 +37,16 @@ def create_new_note(note, model, deck, tags):
 
     return new_note
     
-def send_to_anki(new_note, col):
+def send_to_anki(new_note):
     # Set the model
-    modelBasic = col.models.byName(new_note['modelName'])
-    col.decks.current()['mid'] = modelBasic['id']
+    modelBasic = mw.col.models.byName(new_note['modelName'])
+    mw.col.decks.current()['mid'] = modelBasic['id']
 
     # Get the deck
-    deck = col.decks.byName(new_note['deckName'])
+    deck = mw.col.decks.byName(new_note['deckName'])
 
     # Instantiate the new note
-    note = col.newNote()
+    note = mw.col.newNote()
     note.model()['did'] = deck['id']
 
     # Add the fields
@@ -65,16 +65,16 @@ def send_to_anki(new_note, col):
 
     # Set the tags (and add the new ones to the deck configuration
     tags = " ".join(new_note["tags"])
-    note.tags = col.tags.canonify(col.tags.split(tags))
+    note.tags = mw.col.tags.canonify(mw.col.tags.split(tags))
     m = note.model()
     m['tags'] = note.tags
-    col.models.save(m)
+    mw.col.models.save(m)
 
     # Add the note
-    col.addNote(note)
+    mw.col.addNote(note)
 
 # config is complete configutration dictionary
-def change_cards(col, config):
+def change_cards():
     print('running subs change...')
 
     # short names for config dictionaries
@@ -85,7 +85,7 @@ def change_cards(col, config):
     print('gathering notes...')
 
     # search the database for subs cards tagged to change
-    noteIds = col.findNotes("tag:%s" % tags['change'])
+    noteIds = mw.col.findNotes("tag:%s" % tags['change'])
 
     # check for blank notes array; if empty, return False
     if not len(noteIds):
@@ -97,18 +97,18 @@ def change_cards(col, config):
     new_notes = [] #blank array to hold new notes made below
     # create the notes
     for noteId in noteIds:
-        note = col.getNote(noteId)
+        note = mw.col.getNote(noteId)
         new_notes.append(create_new_note(note, model=models['japanese'], deck=decks['main'], tags=tags))
     
     print(f"...\ncreated {len(new_notes)} new notes\nsending to Anki...\n")
 
     for new_note in new_notes:
-        send_to_anki(new_note, col)
+        send_to_anki(new_note)
         # pass
     
     print('deleting old notes...')
-    col.remNotes(noteIds)
+    mw.col.remNotes(noteIds)
 
     print('saving to database...')
-    col.save()
+    mw.col.save()
     print('changes saved!\nplease open anki desktop to sync')
