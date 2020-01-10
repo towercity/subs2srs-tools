@@ -5,6 +5,7 @@ from aqt import mw
 from aqt.qt import *
 
 from .util.change import change_decks
+from .util.add_cards import add_by_tag
 
 # add menu item to menu   
 change = QAction("Change Decks", mw)
@@ -16,5 +17,5 @@ def test_ask():
     showInfo(vari)
 
 add = QAction("Add Cards", mw)
-add.triggered.connect(test_ask)
+add.triggered.connect(add_by_tag)
 mw.form.menuTools.addAction(add)
