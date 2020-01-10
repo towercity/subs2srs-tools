@@ -1,13 +1,8 @@
-# import the main window object (mw) from aqt
-# import the "show info" tool from utils.py
 from aqt.utils import showInfo
 # import all of the Qt GUI library
 from aqt.qt import *
-import urllib.request as request
-import json
-
-# currenltly used imports
 from aqt import mw
+
 from .jisho import JishoHandler
 
 # load config files
