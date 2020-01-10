@@ -46,6 +46,8 @@ def create_new_note(note, model, deck, tags):
         "tags": strip_tags(note.tags, tags['change'])
     }
 
+    return new_note
+
 def send_to_anki(new_note):
     # Set the model
     modelBasic = mw.col.models.byName(new_note['modelName'])
@@ -83,14 +85,14 @@ def send_to_anki(new_note):
     mw.col.addNote(note)
 
 
-def change_decks():
+def change_t():
     change_tag = config['tags']['change']
     change_notes = mw.col.findNotes('note:subs2srs tag:%s' % change_tag) #saves a list of note IDs
     showInfo("found %s cards tagged '%s'" % (len(change_notes), change_tag))
 #    test = search_jisho('red')
 #    showInfo(str(test['meta']['status']))
 
-def change_cards():
+def change_decks():
     print('running subs change...')
 
     # short names for config dictionaries
@@ -127,4 +129,5 @@ def change_cards():
 
     print('saving to database...')
     mw.col.save()
-    print('changes saved!\nplease open anki desktop to sync')
+
+    showInfo(f"{len(noteIds)} notes changed!")
