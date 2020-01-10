@@ -15,6 +15,6 @@ def test_ask():
     vari = getOnlyText('enter text')
     showInfo(vari)
 
-add = QAction("test", mw)
+add = QAction("Add Cards", mw)
 add.triggered.connect(test_ask)
 mw.form.menuTools.addAction(add)
