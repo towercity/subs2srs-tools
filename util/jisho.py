@@ -18,9 +18,14 @@ class JishoHandler():
     def get_reading(self, jisho_resp): #returns term with [furigana]
         term_dict = jisho_resp['japanese'][0]
         if 'word' in term_dict:
-            return ("%s[%s]" % (term_dict['word'], term_dict['reading']))
-        else:
+            if 'reading' in term_dict:
+                return ("%s[%s]" % (term_dict['word'], term_dict['reading']))
+            else:
+                return term_dict['word']
+        elif 'reading' in term_dict:
             return term_dict['reading']
+        else:
+            return ''
 
     def get_definition(self, jisho_resp):
         senses = jisho_resp['senses'] # jisho gives each separate definition as a 'sense'

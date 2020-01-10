@@ -119,6 +119,7 @@ def add_cards(tag, new_terms=[]):
         print(f"current archive: {' '.join(vocab_archive)}")
 
     print('Copying over subs2srs notes...')
+    showInfo("Added %s notes:\n * %s" % (len(vocab_archive), '\n * '.join(vocab_archive)))
     change_decks()
 
     print('saving to database')
