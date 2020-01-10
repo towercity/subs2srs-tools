@@ -3,7 +3,7 @@ from aqt import mw
 from aqt.utils import showInfo, getOnlyText, askUser
 
 from .jisho import JishoHandler
-from .change_cards import change_cards
+from .change import change_decks
 
 # load config files
 config = mw.addonManager.getConfig(__name__)
@@ -82,7 +82,7 @@ def add_cards(tag, new_terms=[]):
         # add a call to the card add function to the new_terms here
         for term in new_terms:
             jisho_resp = jisho.get_term_one(term)
-            if not jisho_resp:``
+            if not jisho_resp:
                 print(f"\"{term}\" not found.")
             else: 
                 add_term(jisho_resp, tag)
@@ -119,7 +119,7 @@ def add_cards(tag, new_terms=[]):
         print(f"current archive: {' '.join(vocab_archive)}")
 
     print('Copying over subs2srs notes...')
-    change_cards()
+    change_decks()
 
     print('saving to database')
     mw.col.save()
