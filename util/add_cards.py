@@ -26,19 +26,14 @@ def add_term(jisho_resp, tag):
     # check if not already exists; if so, add and leave
     note_exists = mw.col.findNotes(f"Vocabulary:{term}")
     if note_exists:
-        print(f"{term} already exists in database. Adding tag {tag}...")
         mw.col.tags.bulkAdd(note_exists, tag, True) #the actual adding logic for anki 
         return True
 
-    print(f"{term} does not yet exist")
-
     # find root term for better quality searching
     term_root = find_root(term, jisho.get_pos(jisho_resp))
-    print('Searching for notes in database with term...')
     subs2srs_notes = mw.col.findNotes(f"note:{config['models']['subs2srs']} {term_root}")
 
     if subs2srs_notes: #if it's found something....
-        print('Note found!\nPreparing note')
         edit_notes = subs2srs_notes[0:1]
         note = mw.col.getNote(subs2srs_notes[0]) #only edit the first found note
         note.fields[5] = term #saves the term to the correct field in the model
@@ -46,8 +41,6 @@ def add_term(jisho_resp, tag):
         mw.col.tags.bulkAdd(edit_notes, tag, True) #add the new tag
         note.flush()
     else:
-        print('No notes found.\nAdding new card...')
-
         # Set the model
         modelBasic = mw.col.models.byName(config["models"]["japanese"])
         mw.col.decks.current()['mid'] = modelBasic['id']
@@ -77,18 +70,15 @@ def add_cards(tag, new_terms=[]):
     vocab_archive = [] #keeps record of added cards
 
     if new_terms:
-        print(f"adding {len(new_terms)} new cards to {tag}")
-        print(new_terms)
+        (f"adding {len(new_terms)} new cards to {tag}")
         # add a call to the card add function to the new_terms here
         for term in new_terms:
             jisho_resp = jisho.get_term_one(term)
             if not jisho_resp:
-                print(f"\"{term}\" not found.")
+                pass
             else: 
                 add_term(jisho_resp, tag)
                 vocab_archive.append(term)
-    else:
-        print(f"adding new cards to {tag}")
 
     # start notes add loop
     searching = True
@@ -97,7 +87,6 @@ def add_cards(tag, new_terms=[]):
 
         # exit condition
         if term == 'q' or term == '':
-            print('exiting...')
             searching = False
             break
 
@@ -105,7 +94,6 @@ def add_cards(tag, new_terms=[]):
         jisho_resp = jisho.get_term_one(term)
         if not jisho_resp:
             showInfo('No term found. rerunning search')
-            print(" ------ ")
         else:
             term = jisho.get_japanese_term(jisho_resp)
 
@@ -116,13 +104,9 @@ def add_cards(tag, new_terms=[]):
                 showInfo(f"added {term}")
                 vocab_archive.append(term)            
 
-        print(f"current archive: {' '.join(vocab_archive)}")
-
-    print('Copying over subs2srs notes...')
     showInfo("Added %s notes:\n * %s" % (len(vocab_archive), '\n * '.join(vocab_archive)))
     change_decks()
 
-    print('saving to database')
     mw.col.save()
 
 def add_by_tag():

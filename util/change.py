@@ -21,9 +21,7 @@ def strip_tags(tags, rem_tag):
 # TODO: make the model user-specified
 def create_new_note(note, model, deck, tags):
     term = note.fields[5] # pulls in the vocab term from the 'Note' field
-    print(f"attempting {term}....")
     jisho_resp = jisho.get_term_one(term) # pulls info from Jisho
-    print('info found!')
 
     new_note = {
         "deckName": deck,
@@ -66,9 +64,6 @@ def send_to_anki(new_note):
     note.fields[11] = new_field['Sentence-1-Audio']
     note.fields[12] = new_field['Sentence-1-Image']
 
-    # Print Note Info
-    print(f"new note\nterm: {note.fields[0]}\nmeaning: {note.fields[3]}\n")
-
     # Set the tags (and add the new ones to the deck configuration
     tags = " ".join(new_note["tags"])
     note.tags = mw.col.tags.canonify(mw.col.tags.split(tags))
@@ -88,41 +83,30 @@ def change_t():
 #    showInfo(str(test['meta']['status']))
 
 def change_decks():
-    print('running subs change...')
-
     # short names for config dictionaries
     tags = config['tags']
     models = config['models']
     decks = config['decks']
-
-    print('gathering notes...')
 
     # search the database for subs cards tagged to change
     noteIds = mw.col.findNotes("tag:%s" % tags['change'])
 
     # check for blank notes array; if empty, return False
     if not len(noteIds):
-        print('error: no notes found')
         return False
     
-    print("%s notes gathered\ncreating new notes..." % len(noteIds))
-
     new_notes = [] #blank array to hold new notes made below
     # create the notes
     for noteId in noteIds:
         note = mw.col.getNote(noteId)
         new_notes.append(create_new_note(note, model=models['japanese'], deck=decks['main'], tags=tags))
     
-    print(f"...\ncreated {len(new_notes)} new notes\nsending to Anki...\n")
-
     for new_note in new_notes:
         send_to_anki(new_note)
         # pass
     
-    print('deleting old notes...')
     mw.col.remNotes(noteIds)
 
-    print('saving to database...')
     mw.col.save()
 
     showInfo(f"{len(noteIds)} notes changed!")
