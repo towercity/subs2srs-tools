@@ -1,5 +1,7 @@
 # subs2srs Vocab Tools
 
+Download here: https://ankiweb.net/shared/info/390779156
+
 A simple Anki 2.1+ addon that eases the process of making Japanese vocab study cards from subs2srs cards. It has two major functions:
 
 ## 1. Change subs2srs cards
