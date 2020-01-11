@@ -10,5 +10,9 @@
     "tags": {
         "change": "00change",
         "add": ""
+    },
+    "shortcuts": {
+        "add": "Shift+A",
+        "change": "c"
     }
 }
