@@ -1,8 +1,9 @@
+# Anki imports
 from aqt.utils import showInfo
-# import all of the Qt GUI library
 from aqt.qt import *
 from aqt import mw
 
+# local dependencies
 from .jisho import JishoHandler
 
 # load config files
@@ -73,14 +74,6 @@ def send_to_anki(new_note):
 
     # Add the note
     mw.col.addNote(note)
-
-
-def change_t():
-    change_tag = config['tags']['change']
-    change_notes = mw.col.findNotes('note:subs2srs tag:%s' % change_tag) #saves a list of note IDs
-    showInfo("found %s cards tagged '%s'" % (len(change_notes), change_tag))
-#    test = search_jisho('red')
-#    showInfo(str(test['meta']['status']))
 
 def change_decks():
     # short names for config dictionaries
