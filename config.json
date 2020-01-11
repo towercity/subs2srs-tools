@@ -8,8 +8,7 @@
         "subs2srs": "subs2srs"
     },
     "tags": {
-        "change": "00change",
-        "add": ""
+        "change": "00change"
     },
     "shortcuts": {
         "add": "Shift+A",

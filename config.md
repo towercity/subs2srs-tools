@@ -2,12 +2,14 @@
 
 ### decks: 
 
-__subs2srs__: the deck subs2srs cards are pulled from
+__subs2srs__: The deck subs2srs cards are pulled from.
 
-__main__: the main language learning deck cards are moved to
+__main__: The main language learning deck cards are moved to.
 
 ### tags:
 
-__change__: the tag Subs Change searches for to change
+__change__: The tag the change operation searches for; notes with this tag will be changed.
 
-__add__ (optional): a tag to add to changed notes
+### shortcuts
+
+These allow you to change the keyboard shortcuts for each function
