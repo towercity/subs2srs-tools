@@ -1,25 +1,29 @@
-import sys
+#anko imports
 from aqt import mw
 from aqt.utils import showInfo, getOnlyText, askUser
 
+# local utilities
 from .jisho import JishoHandler
 from .change import change_decks
 
 # load config files
 config = mw.addonManager.getConfig(__name__)
 
+# init jisho handler
 jisho = JishoHandler()
 
+# given a term and its part of speech, reduces the term to its root for simple unconjugated searching
 def find_root(term, pos):
     term = list(term) # make a list for easy manipulations
 
-    if pos == 'adjective' and term[len(term) - 1] == 'い':
-        term = term[:-1] #remove the last character of the word
+    if pos == 'adjective' and term[len(term) - 1] == 'い': # method to find い adjectives
+        term = term[:-1] # remove the last character of the word
     elif pos == 'verb':
         term = term[:-1]
         
     return ''.join(term)
 
+# given a jisho response at a tag to add, puts the user-specified term into the database in one of three ways
 def add_term(jisho_resp, tag):
     term = jisho.get_japanese_term(jisho_resp)
 
@@ -29,7 +33,7 @@ def add_term(jisho_resp, tag):
         mw.col.tags.bulkAdd(note_exists, tag, True) #the actual adding logic for anki 
         return True
 
-    # find root term for better quality searching
+    # find root term then search for it
     term_root = find_root(term, jisho.get_pos(jisho_resp))
     subs2srs_notes = mw.col.findNotes(f"note:{config['models']['subs2srs']} {term_root}")
 
@@ -69,7 +73,7 @@ def add_term(jisho_resp, tag):
 def add_cards(tag, new_terms=[]):
     vocab_archive = [] #keeps record of added cards
 
-    if new_terms:
+    if new_terms: # dated code; kept in for future bulk-add extention 
         (f"adding {len(new_terms)} new cards to {tag}")
         # add a call to the card add function to the new_terms here
         for term in new_terms:
@@ -80,12 +84,12 @@ def add_cards(tag, new_terms=[]):
                 add_term(jisho_resp, tag)
                 vocab_archive.append(term)
 
-    # start notes add loop
+    # loops to add new notes until user quits
     searching = True
     while searching:
-        term = getOnlyText(f"Tag: {tag}\nEnter term: ")
+        term = getOnlyText(f"Tag: {tag}\nEnter term: ") #asks for term via anki
 
-        # exit condition
+        # exit condition --> if user hits cancel or enters q
         if term == 'q' or term == '':
             searching = False
             break
@@ -93,7 +97,7 @@ def add_cards(tag, new_terms=[]):
         # pull data from jisho        
         jisho_resp = jisho.get_term_one(term)
         if not jisho_resp:
-            showInfo('No term found. rerunning search')
+            showInfo('No term found. Rerunning search')
         else:
             term = jisho.get_japanese_term(jisho_resp)
 
@@ -101,7 +105,6 @@ def add_cards(tag, new_terms=[]):
 
             if add_note == True:
                 add_term(jisho_resp, tag) #the logic to add the cardo
-                showInfo(f"added {term}")
                 vocab_archive.append(term)            
 
     showInfo("Added %s notes:\n * %s" % (len(vocab_archive), '\n * '.join(vocab_archive)))
@@ -109,6 +112,7 @@ def add_cards(tag, new_terms=[]):
 
     mw.col.save()
 
+# wrapper function. prompts the user for tag then calls add function with it
 def add_by_tag():
     tag = getOnlyText("Enter tag")
     add_cards(tag)
