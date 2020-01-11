@@ -10,6 +10,7 @@ from .util.add_cards import add_by_tag
 # add menu item to menu   
 change = QAction("Change Decks", mw)
 change.triggered.connect(change_decks)
+change.setShortcut('c')
 mw.form.menuTools.addAction(change)
 
 def test_ask():
@@ -18,4 +19,5 @@ def test_ask():
 
 add = QAction("Add Cards", mw)
 add.triggered.connect(add_by_tag)
+add.setShortcut('Shift+A')
 mw.form.menuTools.addAction(add)
