@@ -1,0 +1,1 @@
+{"name": "subs2srs Tools", "mod": 1578783841, "min_point_version": 0, "max_point_version": 0, "branch_index": 0, "config": {"decks": {"main": "01 - Japanese::01 - Cards", "subs2srs": "01 - Japanese::02 - subs_bank"}, "models": {"japanese": "Japanese", "subs2srs": "subs2srs"}, "shortcuts": {"add": "Shift+A", "change": "c"}, "tags": {"change": "00change"}}}

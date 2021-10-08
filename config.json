@@ -1,0 +1,17 @@
+{
+    "decks": {
+        "subs2srs": "All::01 - Japanese::01 - Cards::02 - subs_bank",
+        "main": "All::01 - Japanese::01 - Cards::01 - Cards"
+    },
+    "models": {
+        "japanese": "Japanese",
+        "subs2srs": "subs2srs"
+    },
+    "tags": {
+        "change": "00change"
+    },
+    "shortcuts": {
+        "add": "Shift+A",
+        "change": "c"
+    }
+}
